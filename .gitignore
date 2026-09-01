@@ -1,0 +1,16 @@
+node_modules/
+
+# Variables d'environnement (ne jamais versionner les secrets)
+.env
+
+# Base de données locale
+*.db
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+
+# Système / IDE
+.DS_Store
+.idea/
+.vscode/
+*.log

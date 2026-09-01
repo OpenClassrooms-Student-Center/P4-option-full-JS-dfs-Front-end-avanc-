@@ -1,0 +1,47 @@
+{
+  "name": "abricot-backend-js",
+  "version": "1.0.0",
+  "description": "API REST Abricot.co - Node.js + Express + Prisma (JavaScript)",
+  "type": "module",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "setup": "prisma generate && prisma migrate deploy && node scripts/seed.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "seed": "node scripts/seed.js",
+    "lint": "eslint ."
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "prisma",
+    "jwt",
+    "api-rest"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.2.1",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "9.0.3",
+    "morgan": "^1.10.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.12.0",
+    "globals": "^17.13.0",
+    "nodemon": "^3.0.2",
+    "prisma": "^6.19.3"
+  }
+}
