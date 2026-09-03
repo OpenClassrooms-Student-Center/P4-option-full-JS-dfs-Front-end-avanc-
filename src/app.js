@@ -5,6 +5,8 @@ import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import projectRoutes from "./routes/projectRoutes.js";
 import { specs } from "./config/swagger.js";
 import { sendError } from "./utils/response.js";
 
@@ -29,6 +31,8 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/projects", projectRoutes);
 
 // Route inconnue
 app.use((req, res) => {
