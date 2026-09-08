@@ -10,6 +10,7 @@ import {
 } from "../controllers/projectController.js";
 import { authenticateToken } from "../middleware/auth.js";
 import { requireProjectAccess } from "../middleware/projectAccess.js";
+import taskRoutes from "./taskRoutes.js";
 
 const router = Router();
 
@@ -221,5 +222,7 @@ router.delete("/:id", requireProjectAccess, deleteProject);
 router.post("/:id/contributors", requireProjectAccess, addContributor);
 router.delete("/:id/contributors/:userId", requireProjectAccess, removeContributor);
 
+// Tâches (et commentaires) d'un projet
+router.use("/:id/tasks", requireProjectAccess, taskRoutes);
 
 export default router;
