@@ -38,6 +38,27 @@ export const getTasks = async (req, res) => {
   sendSuccess(res, "Tâches récupérées avec succès", { tasks: tasksWithRelations });
 };
 
+/** GET /projects/:id/tasks/:taskId */
+export const getTask = async (req, res) => {
+  const task = await prisma.task.findUnique({
+    where: { id: req.params.taskId },
+    include: {
+      creator: { select: publicUserSelect },
+      project: { select: { id: true, name: true } },
+    },
+  });
+
+  if (!task) {
+    sendSuccess(res, "Aucune tâche trouvée", { task: null });
+    return;
+  }
+
+  const assignees = await getTaskAssignees(task.id);
+  const comments = await getTaskComments(task.id);
+
+  sendSuccess(res, "Tâche récupérée avec succès", { task: { ...task, assignees, comments } });
+};
+
 /**
  * POST /projects/:id/tasks
  *
