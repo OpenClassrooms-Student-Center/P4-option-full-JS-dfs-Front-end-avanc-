@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { createTask, updateTask, deleteTask } from "../controllers/taskController.js";
+import { getTasks, createTask, updateTask, deleteTask } from "../controllers/taskController.js";
 import commentRoutes from "./commentRoutes.js";
 
 // mergeParams : donne accès au paramètre :id défini dans projectRoutes
 const router = Router({ mergeParams: true });
+
+router.get("/", getTasks);
 
 // TODO (étudiant) : documenter ces routes (annotations @openapi, voir les autres fichiers de routes)
 router.post("/", createTask);

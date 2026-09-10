@@ -1,4 +1,7 @@
-import { sendError } from "../utils/response.js";
+import prisma from "../lib/prisma.js";
+import { publicUserSelect } from "../utils/selects.js";
+import { getTaskAssignees, getTaskComments } from "../utils/taskRelations.js";
+import { sendSuccess, sendError } from "../utils/response.js";
 
 /*
  * Toutes les routes de ce contrôleur passent par authenticateToken puis
@@ -10,6 +13,29 @@ import { sendError } from "../utils/response.js";
 
 const notImplemented = (res) => {
   sendError(res, "Fonctionnalité à implémenter", "NOT_IMPLEMENTED", 501);
+};
+
+/** GET /projects/:id/tasks */
+export const getTasks = async (req, res) => {
+  const tasks = await prisma.task.findMany({
+    where: { projectId: req.params.id },
+    include: {
+      creator: { select: publicUserSelect },
+      project: { select: { id: true, name: true } },
+    },
+    // Les plus urgentes en premier
+    orderBy: [{ priority: "desc" }, { dueDate: "asc" }],
+  });
+
+  // On complète chaque tâche avec ses assignations et ses commentaires
+  const tasksWithRelations = [];
+  for (const task of tasks) {
+    const assignees = await getTaskAssignees(task.id);
+    const comments = await getTaskComments(task.id);
+    tasksWithRelations.push({ ...task, assignees, comments });
+  }
+
+  sendSuccess(res, "Tâches récupérées avec succès", { tasks: tasksWithRelations });
 };
 
 /**
